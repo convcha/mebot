@@ -1,3 +1,2 @@
 # mebot
-=====
-mebot.meteor.com
+http://mebot.meteor.com/
