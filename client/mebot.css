@@ -135,6 +135,24 @@ h3 {
     text-decoration: none;
 }
 
+#lists .list .destroy {
+    cursor: pointer;
+    float: right;
+    position: relative;
+    top: 2px;
+    height: 20px;
+    width: 20px;\
+    vertical-align: middle;
+}
+
+#lists .list:hover .destroy {
+    background: url('/destroy.png') no-repeat 0 0;
+}
+
+#lists .list .destroy:hover {
+    background-position: 0 -20px;
+}
+
 #createList {
     padding: 3px 6px;
     margin-top: 5px;

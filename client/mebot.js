@@ -97,6 +97,13 @@ Template.lists.events({
     Session.set('editing_listname', this._id);
     Deps.flush(); // force DOM redraw, so we can focus the edit field
     activateInput(tmpl.find("#list-name-input"));
+  },
+  'click .destroy': function () {
+    Lists.remove(this._id);
+    var items = Todos.find({list_id: this._id});
+    items.forEach(function (item){
+      Todos.remove(item._id);
+    });
   }
 });
 
