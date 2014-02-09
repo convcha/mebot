@@ -104,6 +104,8 @@ Template.lists.events({
     items.forEach(function (item){
       Todos.remove(item._id);
     });
+    Session.set('list_id', null);
+    Router.setList(null);
   }
 });
 
