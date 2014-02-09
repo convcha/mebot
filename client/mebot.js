@@ -197,10 +197,6 @@ Template.todo_item.done_class = function () {
   return this.done ? 'done' : '';
 };
 
-Template.todo_item.done_checkbox = function () {
-  return this.done ? 'checked="checked"' : '';
-};
-
 Template.todo_item.editing = function () {
   return Session.equals('editing_itemname', this._id);
 };
@@ -210,10 +206,6 @@ Template.todo_item.adding_tag = function () {
 };
 
 Template.todo_item.events({
-  'click .check': function () {
-    Todos.update(this._id, {$set: {done: !this.done}});
-  },
-
   'click .addtag': function (evt, tmpl) {
     Session.set('editing_addtag', this._id);
     Deps.flush(); // update DOM before focus

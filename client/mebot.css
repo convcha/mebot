@@ -243,11 +243,6 @@ h3 {
     border: 1px dashed #999;
 }
 
-#item-list .todo .check {
-    float: left;
-    width: 25px;
-}
-
 #item-list .todo .todo-text {
     float: left;
     margin-left: 10px;
