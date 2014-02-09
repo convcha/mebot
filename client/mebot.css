@@ -141,7 +141,7 @@ h3 {
     position: relative;
     top: 2px;
     height: 20px;
-    width: 20px;\
+    width: 20px;
     vertical-align: middle;
 }
 
@@ -190,15 +190,6 @@ h3 {
     border-top: 1px solid #ccc;
 }
 
-#item-list .todo .destroy {
-    cursor: pointer;
-    position: absolute;
-    left: 5px;
-    top: 15px;
-    height: 20px;
-    width: 20px;
-}
-
 #item-list .todo .display, #item-list .todo .edit {
     margin-left: 30px;
     height: 100%;
@@ -217,14 +208,6 @@ h3 {
 #item-list .done .todo-text {
     text-decoration: line-through;
     color: #999;
-}
-
-#item-list .todo:hover .destroy {
-    background: url('/destroy.png') no-repeat 0 0;
-}
-
-#item-list .todo .destroy:hover {
-    background-position: 0 -20px;
 }
 
 #item-list .todo .item-tags {

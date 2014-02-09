@@ -214,10 +214,6 @@ Template.todo_item.events({
     Todos.update(this._id, {$set: {done: !this.done}});
   },
 
-  'click .destroy': function () {
-    Todos.remove(this._id);
-  },
-
   'click .addtag': function (evt, tmpl) {
     Session.set('editing_addtag', this._id);
     Deps.flush(); // update DOM before focus
