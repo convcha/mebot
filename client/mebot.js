@@ -205,6 +205,13 @@ Template.todo_item.adding_tag = function () {
   return Session.equals('editing_addtag', this._id);
 };
 
+Template.todo_item.helpers({
+  created: function() {
+    var time = moment(this.timestamp);
+    return time.format ('h:mm');
+  }
+})
+
 Template.todo_item.events({
   'click .addtag': function (evt, tmpl) {
     Session.set('editing_addtag', this._id);
