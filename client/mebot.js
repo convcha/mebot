@@ -164,7 +164,9 @@ Template.comments.events(okCancelEvents(
         room_id: Session.get('room_id'),
         done: false,
         timestamp: (new Date()).getTime(),
-        tags: tag ? [tag] : []
+        tags: tag ? [tag] : [],
+        owner: Meteor.user()._id,
+        owner_name: Meteor.user().emails[0].address.split('@')[0]
       });
       evt.target.value = '';
     }
@@ -211,7 +213,11 @@ Template.comment_item.helpers ({
     return time.format ('H:mm');
   },
   displayName: function () {
-    return Meteor.users.findOne(Meteor.userId).emails[0].address.split('@')[0];
+    if(Meteor.user()){
+      return Meteor.users.findOne(Meteor.userId).emails[0].address.split('@')[0];
+    }else{
+      return '';
+    }
   }
 });
 

@@ -52,7 +52,11 @@
         Loading...
       {{else}}
         <div id="new-comment-box">
-          <input type="text" id="new-comment" placeholder="New comment" />
+          {{#if currentUser}}
+            <input type="text" id="new-comment" placeholder="New comment" />
+          {{else}}
+            Please login to comment
+          {{/if}}
         </div>
         <ul id="item-list">
           {{#each comments}}
@@ -73,7 +77,7 @@
     {{else}}
       <div class="display">
         <div class="comment-text">[{{created}}]</div>
-        <div class="comment-text">({{displayName}})</div>
+        <div class="comment-text">({{owner_name}})</div>
         <div class="comment-text">{{text}}</div>
       </div>
     {{/if}}
