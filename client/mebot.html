@@ -8,29 +8,29 @@
   </div>
 
   <div id="main-pane">
-    {{> todos}}
+    {{> comments}}
   </div>
 
   <div id="side-pane">
-    {{> lists}}
+    {{> rooms}}
   </div>
 </body>
 
-<template name="lists">
+<template name="rooms">
   <h3>Rooms</h3>
   {{#if loading}}
-    <div id="lists">Loading...</div>
+    <div id="rooms">Loading...</div>
   {{else}}
-    <div id="lists">
-      {{#each lists}}
-        <div class="list {{selected}}">
+    <div id="rooms">
+      {{#each rooms}}
+        <div class="room {{selected}}">
           {{#if editing}}
             <div class="edit">
-              <input class="list-name-input" id="list-name-input" type="text" value="{{name}}" />
+              <input class="room-name-input" id="room-name-input" type="text" value="{{name}}" />
             </div>
           {{else}}
             <div class="display">
-              <a class="list-name {{name_class}}" href="/{{_id}}">
+              <a class="room-name {{name_class}}" href="/{{_id}}">
                 {{name}}
               </a>
               <div class="destroy"></div>
@@ -39,24 +39,24 @@
         </div>
       {{/each}}
     </div>
-    <div id="createList">
-      <input type="text" id="new-list" placeholder="New room" />
+    <div id="createRoom">
+      <input type="text" id="new-room" placeholder="New room" />
     </div>
   {{/if}}
 </template>
 
-<template name="todos">
-  {{#if any_list_selected}}
+<template name="comments">
+  {{#if any_room_selected}}
     <div id="items-view">
       {{#if loading}}
         Loading...
       {{else}}
-        <div id="new-todo-box">
-          <input type="text" id="new-todo" placeholder="New comment" />
+        <div id="new-comment-box">
+          <input type="text" id="new-comment" placeholder="New comment" />
         </div>
         <ul id="item-list">
-          {{#each todos}}
-            {{> todo_item}}
+          {{#each comments}}
+            {{> comment_item}}
           {{/each}}
         </ul>
       {{/if}}
@@ -64,16 +64,16 @@
   {{/if}}
 </template>
 
-<template name="todo_item">
-  <li class="todo {{done_class}}">
+<template name="comment_item">
+  <li class="comment {{done_class}}">
     {{#if editing}}
       <div class="edit">
-        <input id="todo-input" type="text" value="{{text}}" />
+        <input id="comment-input" type="text" value="{{text}}" />
       </div>
     {{else}}
       <div class="display">
-        <div class="todo-text">[{{created}}]</div>
-        <div class="todo-text">{{text}}</div>
+        <div class="comment-text">[{{created}}]</div>
+        <div class="comment-text">{{text}}</div>
       </div>
     {{/if}}
     <div class="item-tags">

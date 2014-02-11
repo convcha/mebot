@@ -1,22 +1,22 @@
-// Lists -- {name: String}
-Lists = new Meteor.Collection("lists");
+// Rooms -- {name: String}
+Rooms = new Meteor.Collection("rooms");
 
-// Publish complete set of lists to all clients.
-Meteor.publish('lists', function () {
-  return Lists.find();
+// Publish complete set of rooms to all clients.
+Meteor.publish('rooms', function () {
+  return Rooms.find();
 });
 
 
-// Todos -- {text: String,
+// Comments -- {text: String,
 //           done: Boolean,
 //           tags: [String, ...],
-//           list_id: String,
+//           room_id: String,
 //           timestamp: Number}
-Todos = new Meteor.Collection("todos");
+Comments = new Meteor.Collection("comments");
 
-// Publish all items for requested list_id.
-Meteor.publish('todos', function (list_id) {
-  check(list_id, String);
-  return Todos.find({list_id: list_id});
+// Publish all items for requested room_id.
+Meteor.publish('comments', function (room_id) {
+  check(room_id, String);
+  return Comments.find({room_id: room_id});
 });
 

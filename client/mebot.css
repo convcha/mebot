@@ -119,23 +119,23 @@ h3 {
     padding-left: 2px;
 }
 
-#lists .list {
+#rooms .room {
     padding: 3px 6px;
 }
 
-#lists .selected {
+#rooms .selected {
     padding: 2px 6px;
     background: #9be;
     font-weight: bold;
 }
 
-#lists .list-name {
+#rooms .room-name {
     cursor: pointer;
     color: black;
     text-decoration: none;
 }
 
-#lists .list .destroy {
+#rooms .room .destroy {
     cursor: pointer;
     float: right;
     position: relative;
@@ -145,24 +145,24 @@ h3 {
     vertical-align: middle;
 }
 
-#lists .list:hover .destroy {
+#rooms .room:hover .destroy {
     background: url('/destroy.png') no-repeat 0 0;
 }
 
-#lists .list .destroy:hover {
+#rooms .room .destroy:hover {
     background-position: 0 -20px;
 }
 
-#createList {
+#createRoom {
     padding: 3px 6px;
     margin-top: 5px;
 }
 
-#createList input {
+#createRoom input {
     width: 180px;
 }
 
-#new-todo-box {
+#new-comment-box {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 60px;
@@ -172,7 +172,7 @@ h3 {
     height: 40px;
 }
 
-#new-todo {
+#new-comment {
    position: absolute;
    width: 100%;
 }
@@ -182,7 +182,7 @@ h3 {
     margin-left: 5px;
 }
 
-#item-list .todo {
+#item-list .comment {
     display: block;
     height: 50px;
     position: relative;
@@ -190,7 +190,7 @@ h3 {
     border-top: 1px solid #ccc;
 }
 
-#item-list .todo .display, #item-list .todo .edit {
+#item-list .comment .display, #item-list .comment .edit {
     margin-left: 30px;
     height: 100%;
     width: auto;
@@ -199,32 +199,32 @@ h3 {
     line-height: 1;
 }
 
-#todo-input {
+#comment-input {
     width: 300px;
     position: relative;
     top: -3px;
 }
 
-#item-list .done .todo-text {
+#item-list .done .comment-text {
     text-decoration: line-through;
     color: #999;
 }
 
-#item-list .todo .item-tags {
+#item-list .comment .item-tags {
     overflow: auto;
     float: right;
     margin-right: 8px;
 }
 
-#item-list .todo .item-tags .tag {
+#item-list .comment .item-tags .tag {
     margin-top: 15px;
 }
 
-#item-list .todo .item-tags .removable_tag {
+#item-list .comment .item-tags .removable_tag {
     padding-right: 22px;
 }
 
-#item-list .todo .item-tags .tag .remove {
+#item-list .comment .item-tags .tag .remove {
     position: absolute;
     top: 0;
     right: 4px;
@@ -233,23 +233,23 @@ h3 {
     background: url("/close_16.png") no-repeat 0 center;
 }
 
-#item-list .todo .item-tags .tag .remove:hover {
+#item-list .comment .item-tags .tag .remove:hover {
     background-position: -16px center;
 }
 
-#item-list .todo .item-tags div.addtag {
+#item-list .comment .item-tags div.addtag {
     background: none;
     color: #333;
     border: 1px dashed #999;
 }
 
-#item-list .todo .todo-text {
+#item-list .comment .comment-text {
     float: left;
     margin-left: 10px;
     font-size: 100%;
 }
 
-#item-list .todo .edit input {
+#item-list .comment .edit input {
     margin-left: 35px;
 }
 

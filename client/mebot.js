@@ -1,42 +1,42 @@
 // Client-side JavaScript, bundled and sent to client.
 
 // Define Minimongo collections to match server/publish.js.
-Lists = new Meteor.Collection("lists");
-Todos = new Meteor.Collection("todos");
+Rooms = new Meteor.Collection("rooms");
+Comments = new Meteor.Collection("comments");
 
-// ID of currently selected list
-Session.setDefault('list_id', null);
+// ID of currently selected room
+Session.setDefault('room_id', null);
 
 // Name of currently selected tag for filtering
 Session.setDefault('tag_filter', null);
 
-// When adding tag to a todo, ID of the todo
+// When adding tag to a comment, ID of the comment
 Session.setDefault('editing_addtag', null);
 
-// When editing a list name, ID of the list
-Session.setDefault('editing_listname', null);
+// When editing a room name, ID of the room
+Session.setDefault('editing_roomname', null);
 
-// When editing todo text, ID of the todo
+// When editing comment text, ID of the comment
 Session.setDefault('editing_itemname', null);
 
-// Subscribe to 'lists' collection on startup.
-// Select a list once data has arrived.
-var listsHandle = Meteor.subscribe('lists', function () {
-  if (!Session.get('list_id')) {
-    var list = Lists.findOne({}, {sort: {name: 1}});
-    if (list)
-      Router.setList(list._id);
+// Subscribe to 'rooms' collection on startup.
+// Select a room once data has arrived.
+var roomsHandle = Meteor.subscribe('rooms', function () {
+  if (!Session.get('room_id')) {
+    var room = Rooms.findOne({}, {sort: {name: 1}});
+    if (room)
+      Router.setRoom(room._id);
   }
 });
 
-var todosHandle = null;
-// Always be subscribed to the todos for the selected list.
+var commentsHandle = null;
+// Always be subscribed to the comments for the selected room.
 Deps.autorun(function () {
-  var list_id = Session.get('list_id');
-  if (list_id)
-    todosHandle = Meteor.subscribe('todos', list_id);
+  var room_id = Session.get('room_id');
+  if (room_id)
+    commentsHandle = Meteor.subscribe('comments', room_id);
   else
-    todosHandle = null;
+    commentsHandle = null;
 });
 
 
@@ -75,93 +75,93 @@ var activateInput = function (input) {
   input.select();
 };
 
-////////// Lists //////////
+////////// Rooms //////////
 
-Template.lists.loading = function () {
-  return !listsHandle.ready();
+Template.rooms.loading = function () {
+  return !roomsHandle.ready();
 };
 
-Template.lists.lists = function () {
-  return Lists.find({}, {sort: {name: 1}});
+Template.rooms.rooms = function () {
+  return Rooms.find({}, {sort: {name: 1}});
 };
 
-Template.lists.events({
-  'mousedown .list': function (evt) { // select list
-    Router.setList(this._id);
+Template.rooms.events({
+  'mousedown .room': function (evt) { // select room
+    Router.setRoom(this._id);
   },
-  'click .list': function (evt) {
+  'click .room': function (evt) {
     // prevent clicks on <a> from refreshing the page.
     evt.preventDefault();
   },
-  'dblclick .list': function (evt, tmpl) { // start editing list name
-    Session.set('editing_listname', this._id);
+  'dblclick .room': function (evt, tmpl) { // start editing room name
+    Session.set('editing_roomname', this._id);
     Deps.flush(); // force DOM redraw, so we can focus the edit field
-    activateInput(tmpl.find("#list-name-input"));
+    activateInput(tmpl.find("#room-name-input"));
   },
   'click .destroy': function () {
-    Lists.remove(this._id);
-    var items = Todos.find({list_id: this._id});
+    Rooms.remove(this._id);
+    var items = Comments.find({room_id: this._id});
     items.forEach(function (item){
-      Todos.remove(item._id);
+      Comments.remove(item._id);
     });
-    Session.set('list_id', null);
-    Router.setList(null);
+    Session.set('room_id', null);
+    Router.setRoom(null);
   }
 });
 
-// Attach events to keydown, keyup, and blur on "New list" input box.
-Template.lists.events(okCancelEvents(
-  '#new-list',
+// Attach events to keydown, keyup, and blur on "New room" input box.
+Template.rooms.events(okCancelEvents(
+  '#new-room',
   {
     ok: function (text, evt) {
-      var id = Lists.insert({name: text});
-      Router.setList(id);
+      var id = Rooms.insert({name: text});
+      Router.setRoom(id);
       evt.target.value = "";
     }
   }));
 
-Template.lists.events(okCancelEvents(
-  '#list-name-input',
+Template.rooms.events(okCancelEvents(
+  '#room-name-input',
   {
     ok: function (value) {
-      Lists.update(this._id, {$set: {name: value}});
-      Session.set('editing_listname', null);
+      Rooms.update(this._id, {$set: {name: value}});
+      Session.set('editing_roomname', null);
     },
     cancel: function () {
-      Session.set('editing_listname', null);
+      Session.set('editing_roomname', null);
     }
   }));
 
-Template.lists.selected = function () {
-  return Session.equals('list_id', this._id) ? 'selected' : '';
+Template.rooms.selected = function () {
+  return Session.equals('room_id', this._id) ? 'selected' : '';
 };
 
-Template.lists.name_class = function () {
+Template.rooms.name_class = function () {
   return this.name ? '' : 'empty';
 };
 
-Template.lists.editing = function () {
-  return Session.equals('editing_listname', this._id);
+Template.rooms.editing = function () {
+  return Session.equals('editing_roomname', this._id);
 };
 
-////////// Todos //////////
+////////// Comments //////////
 
-Template.todos.loading = function () {
-  return todosHandle && !todosHandle.ready();
+Template.comments.loading = function () {
+  return commentsHandle && !commentsHandle.ready();
 };
 
-Template.todos.any_list_selected = function () {
-  return !Session.equals('list_id', null);
+Template.comments.any_room_selected = function () {
+  return !Session.equals('room_id', null);
 };
 
-Template.todos.events(okCancelEvents(
-  '#new-todo',
+Template.comments.events(okCancelEvents(
+  '#new-comment',
   {
     ok: function (text, evt) {
       var tag = Session.get('tag_filter');
-      Todos.insert({
+      Comments.insert({
         text: text,
-        list_id: Session.get('list_id'),
+        room_id: Session.get('room_id'),
         done: false,
         timestamp: (new Date()).getTime(),
         tags: tag ? [tag] : []
@@ -170,78 +170,78 @@ Template.todos.events(okCancelEvents(
     }
   }));
 
-Template.todos.todos = function () {
-  // Determine which todos to display in main pane,
-  // selected based on list_id and tag_filter.
+Template.comments.comments = function () {
+  // Determine which comments to display in main pane,
+  // selected based on room_id and tag_filter.
 
-  var list_id = Session.get('list_id');
-  if (!list_id)
+  var room_id = Session.get('room_id');
+  if (!room_id)
     return {};
 
-  var sel = {list_id: list_id};
+  var sel = {room_id: room_id};
   var tag_filter = Session.get('tag_filter');
   if (tag_filter)
     sel.tags = tag_filter;
 
-  return Todos.find(sel, {sort: {timestamp: -1}});
+  return Comments.find(sel, {sort: {timestamp: -1}});
 };
 
-Template.todo_item.tag_objs = function () {
-  var todo_id = this._id;
+Template.comment_item.tag_objs = function () {
+  var comment_id = this._id;
   return _.map(this.tags || [], function (tag) {
-    return {todo_id: todo_id, tag: tag};
+    return {comment_id: comment_id, tag: tag};
   });
 };
 
-Template.todo_item.done_class = function () {
+Template.comment_item.done_class = function () {
   return this.done ? 'done' : '';
 };
 
-Template.todo_item.editing = function () {
+Template.comment_item.editing = function () {
   return Session.equals('editing_itemname', this._id);
 };
 
-Template.todo_item.adding_tag = function () {
+Template.comment_item.adding_tag = function () {
   return Session.equals('editing_addtag', this._id);
 };
 
-Template.todo_item.helpers({
+Template.comment_item.helpers({
   created: function() {
     var time = moment(this.timestamp);
     return time.format ('h:mm');
   }
 })
 
-Template.todo_item.events({
+Template.comment_item.events({
   'click .addtag': function (evt, tmpl) {
     Session.set('editing_addtag', this._id);
     Deps.flush(); // update DOM before focus
     activateInput(tmpl.find("#edittag-input"));
   },
 
-  'dblclick .display .todo-text': function (evt, tmpl) {
+  'dblclick .display .comment-text': function (evt, tmpl) {
     Session.set('editing_itemname', this._id);
     Deps.flush(); // update DOM before focus
-    activateInput(tmpl.find("#todo-input"));
+    activateInput(tmpl.find("#comment-input"));
   },
 
   'click .remove': function (evt) {
     var tag = this.tag;
-    var id = this.todo_id;
+    var id = this.comment_id;
 
     evt.target.parentNode.style.opacity = 0;
     // wait for CSS animation to finish
     Meteor.setTimeout(function () {
-      Todos.update({_id: id}, {$pull: {tags: tag}});
+      Comments.update({_id: id}, {$pull: {tags: tag}});
     }, 300);
   }
 });
 
-Template.todo_item.events(okCancelEvents(
-  '#todo-input',
+Template.comment_item.events(okCancelEvents(
+  '#comment-input',
   {
     ok: function (value) {
-      Todos.update(this._id, {$set: {text: value}});
+      Comments.update(this._id, {$set: {text: value}});
       Session.set('editing_itemname', null);
     },
     cancel: function () {
@@ -249,11 +249,11 @@ Template.todo_item.events(okCancelEvents(
     }
   }));
 
-Template.todo_item.events(okCancelEvents(
+Template.comment_item.events(okCancelEvents(
   '#edittag-input',
   {
     ok: function (value) {
-      Todos.update(this._id, {$addToSet: {tags: value}});
+      Comments.update(this._id, {$addToSet: {tags: value}});
       Session.set('editing_addtag', null);
     },
     cancel: function () {
@@ -263,13 +263,13 @@ Template.todo_item.events(okCancelEvents(
 
 ////////// Tag Filter //////////
 
-// Pick out the unique tags from all todos in current list.
+// Pick out the unique tags from all comments in current room.
 Template.tag_filter.tags = function () {
   var tag_infos = [];
   var total_count = 0;
 
-  Todos.find({list_id: Session.get('list_id')}).forEach(function (todo) {
-    _.each(todo.tags, function (tag) {
+  Comments.find({room_id: Session.get('room_id')}).forEach(function (comment) {
+    _.each(comment.tags, function (tag) {
       var tag_info = _.find(tag_infos, function (x) { return x.tag === tag; });
       if (! tag_info)
         tag_infos.push({tag: tag, count: 1});
@@ -302,25 +302,25 @@ Template.tag_filter.events({
   }
 });
 
-////////// Tracking selected list in URL //////////
+////////// Tracking selected room in URL //////////
 
-var TodosRouter = Backbone.Router.extend({
+var CommentsRouter = Backbone.Router.extend({
   routes: {
-    ":list_id": "main"
+    ":room_id": "main"
   },
-  main: function (list_id) {
-    var oldList = Session.get("list_id");
-    if (oldList !== list_id) {
-      Session.set("list_id", list_id);
+  main: function (room_id) {
+    var oldRoom = Session.get("room_id");
+    if (oldRoom !== room_id) {
+      Session.set("room_id", room_id);
       Session.set("tag_filter", null);
     }
   },
-  setList: function (list_id) {
-    this.navigate(list_id, true);
+  setRoom: function (room_id) {
+    this.navigate(room_id, true);
   }
 });
 
-Router = new TodosRouter;
+Router = new CommentsRouter;
 
 Meteor.startup(function () {
   Backbone.history.start({pushState: true});
