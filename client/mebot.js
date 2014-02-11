@@ -205,12 +205,15 @@ Template.comment_item.adding_tag = function () {
   return Session.equals('editing_addtag', this._id);
 };
 
-Template.comment_item.helpers({
-  created: function() {
-    var time = moment(this.timestamp);
+Template.comment_item.helpers ({
+  created: function () {
+    var time = moment (this.timestamp);
     return time.format ('H:mm');
+  },
+  displayName: function () {
+    return Meteor.users.findOne(Meteor.userId).emails[0].address.split('@')[0];
   }
-})
+});
 
 Template.comment_item.events({
   'click .addtag': function (evt, tmpl) {
