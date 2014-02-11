@@ -208,7 +208,7 @@ Template.comment_item.adding_tag = function () {
 Template.comment_item.helpers({
   created: function() {
     var time = moment(this.timestamp);
-    return time.format ('h:mm');
+    return time.format ('H:mm');
   }
 })
 
