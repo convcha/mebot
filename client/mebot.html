@@ -39,9 +39,11 @@
         </div>
       {{/each}}
     </div>
-    <div id="createRoom">
-      <input type="text" id="new-room" placeholder="New room" />
-    </div>
+    {{#if currentUser}}
+      <div id="createRoom">
+        <input type="text" id="new-room" placeholder="New room" />
+      </div>
+    {{/if}}
   {{/if}}
 </template>
 
