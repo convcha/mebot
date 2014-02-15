@@ -33,7 +33,9 @@
               <a class="room-name {{name_class}}" href="/{{_id}}">
                 {{name}}
               </a>
+              {{#if can_destroy}}
               <div class="destroy"></div>
+              {{/if}}
             </div>
           {{/if}}
         </div>

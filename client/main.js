@@ -136,6 +136,10 @@ Template.rooms.selected = function () {
   return Session.equals('room_id', this._id) ? 'selected' : '';
 };
 
+Template.rooms.can_destroy = function () {
+  return Meteor.user() && Session.equals('room_id', this._id);
+}
+
 Template.rooms.name_class = function () {
   return this.name ? '' : 'empty';
 };
